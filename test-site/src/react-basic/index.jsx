@@ -4,6 +4,8 @@ import React, { useEffect, useReducer, useState } from "react"
 import * as ort from "onnxruntime-web"
 import { createRoot } from "react-dom/client"
 import { useMicVAD, utils } from "@ricky0123/vad-react"
+import { Visualizer } from 'react-sound-visualizer';
+
 
 ort.env.wasm.wasmPaths = {
   "ort-wasm-simd-threaded.wasm": "/ort-wasm-simd-threaded.wasm",
@@ -42,10 +44,11 @@ function App() {
   return (
     <section className="section">
       <div className="container">
-        <h1 className="title">Microphone fix fork of vad-react</h1>
+        <h1 className="title">Microphone and streaming fork of vad-react</h1>
 
         <div className="block ">
           <div>state: {JSON.stringify({ "vad.ready": vad.ready ? 1 : 0, "vad.listening": vad.listening ? 1 : 0 })}</div>
+          <br/><br/>
           <button
             style={{marginRight:'1rem'}}
             className={
@@ -86,6 +89,12 @@ function App() {
             Stop microphone & vad
           </button>
         </div>
+
+        <Visualizer audio={vad.stream} autoStart={true}>
+          {({ canvasRef, stop, start, reset }) => (
+              <canvas ref={canvasRef} width={500} height={100} style={{border: '1px solid green'}}/>
+          )}
+        </Visualizer>
 
         <div className="block">
           <ul>

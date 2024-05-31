@@ -102,7 +102,7 @@ export function useMicVAD(inputOptions: Partial<ReactRealTimeVADOptions>) {
     loading, errored, ready,
     listening, userSpeaking,
     initialize, terminate,
-    start, pause, toggle,
+    start, pause, toggle, stream: vad?.stream
   }
 }
 const useIsomorphicLayoutEffect =
