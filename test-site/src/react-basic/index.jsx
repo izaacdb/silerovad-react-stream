@@ -4,7 +4,7 @@ import React, { useEffect, useReducer, useState } from "react"
 import * as ort from "onnxruntime-web"
 import { createRoot } from "react-dom/client"
 import { useMicVAD, utils } from "@ricky0123/vad-react"
-import { Visualizer } from 'react-sound-visualizer';
+import { Visualizer } from "react-sound-visualizer"
 
 
 ort.env.wasm.wasmPaths = {
@@ -45,12 +45,20 @@ function App() {
     <section className="section">
       <div className="container">
         <h1 className="title">Microphone and streaming fork of vad-react</h1>
-
+        <br /><br />
+        <p>This fork allows us to export the microphone stream from vad for use in other services. <br />A combination
+          of "vad.userSpeaking" and "vad.stream" can be used to send human voice streams.</p>
+        <br /><br />
         <div className="block ">
-          <div>state: {JSON.stringify({ "vad.ready": vad.ready ? 1 : 0, "vad.listening": vad.listening ? 1 : 0 })}</div>
-          <br/><br/>
+          <div><b>State</b><br />
+            {JSON.stringify({
+              "vad.ready": vad.ready ? 1 : 0,
+              "vad.listening": vad.listening ? 1 : 0,
+              "vad.userSpeaking": vad.userSpeaking ? 1 : 0
+            })}</div>
+          <br /><br />
           <button
-            style={{marginRight:'1rem'}}
+            style={{ marginRight: "1rem" }}
             className={
               vad.loading ? "button is-primary is-loading" : "button is-primary"
             }
@@ -63,7 +71,7 @@ function App() {
             Start microphone
           </button>
           <button
-            style={{marginRight:'1rem'}}
+            style={{ marginRight: "1rem" }}
             className={
               vad.loading ? "button is-primary is-loading" : "button is-primary"
             }
@@ -76,7 +84,7 @@ function App() {
             Start VAD
           </button>
           <button
-            style={{marginRight:'1rem'}}
+            style={{ marginRight: "1rem" }}
             className={
               vad.loading ? "button is-primary is-loading" : "button is-primary"
             }
@@ -84,19 +92,23 @@ function App() {
               console.log("vad.terminate")
               vad.terminate()
             }}
-            disabled={!vad.ready || !vad.listening}
+            disabled={!vad.ready}
           >
             Stop microphone & vad
           </button>
         </div>
 
-        <Visualizer audio={vad.stream} autoStart={true}>
-          {({ canvasRef, stop, start, reset }) => (
-              <canvas ref={canvasRef} width={500} height={100} style={{border: '1px solid green'}}/>
-          )}
-        </Visualizer>
-
         <div className="block">
+          <b>Stream export visualiser</b><br />
+          <Visualizer audio={vad.stream} autoStart={true} strokeColor="green">
+            {({ canvasRef, stop, start, reset }) => (
+              <canvas ref={canvasRef} width={500} height={100} style={{ border: "1px dotted green" }} />
+            )}
+          </Visualizer>
+        </div>
+        <br /><br />
+        <div className="block">
+          <b>Audio clips</b><br />
           <ul>
             {audioList.map((audioURL) => {
               return (
